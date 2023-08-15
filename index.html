@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<!-- saved from url=(0062)file:///C:/Users/fenix/OneDrive/Desktop/eurojackpot/index.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+  
+  <link rel="stylesheet" type="text/css" href="file:///C:/Users/fenix/OneDrive/Desktop/eurojackpot/style.css">
+  
+  </head>
+  
+  
+<body>
+
+    <link rel="stylesheet" type="text/css" href="file:///C:/Users/fenix/OneDrive/Desktop/eurojackpot/style.css">
+<!--- This only allows the user to input numbers --->
+
+<input type="text" id="input">
+
+<!--- This is the button that adds the number to the list --->
+
+<input type="button" value="add to list" id="add" disabled="">
+
+<!--- Here we have a title for the list --->
+
+<div class="title">Combinations</div>
+
+<!--- This will list all of the numbers --->
+
+<ul id="list"></ul>
+
+<!--- When clicked, this buttons alert the user with the numbers --->
+
+<button id="sum"> Sum </button>
+<button id="max"> Max </button>
+<button id="min"> Min </button>
+<button id="avg"> Avg </button>
+<button id="frequency"> Frequency </button>
+
+
+<div>
+
+  <button value="Refresh Page" onclick="window.location.reload()"> Reset! </button>
+
+</div>
+  
+  <script>
+    
+    let list = document.getElementById("list");
+let input = document.getElementById("input");
+let add = document.getElementById("add");
+var avg = 0;
+var sum = 0;
+var min = -Infinity;
+var max = Infinity;
+let frequency = Object.create(null);
+
+// This will add the input number to the list and clear the input
+
+function addClick() {
+  
+  update(input.value);
+  input.value=input.value.split(' ');
+  result=input.value[0];
+  for (var ind=1; ind<input.value.length-2; ind++){
+    result+=','+input.value[ind];
+  }
+  result+=',d'+input.value[input.value.length-2];
+  result+=',d'+input.value[input.value.length-1];
+  input.value=result;
+  var li = document.createElement("li");
+  li.textContent = input.value;
+  list.appendChild(li);
+  update(input.value);
+  input.value = "";
+  add.disabled = "disabled";
+ 
+}
+
+// This allows the "add to list" button to be turned on/off depending if the user has typed in a number
+
+function enableDisable() {
+  if (this.value === "") {
+    add.disabled = "disabled";
+  } else {
+    add.removeAttribute("disabled");
+  }
+}
+
+// This will calculate and update all variable values
+
+function update(enteredValue) {
+  frequency[enteredValue] = (frequency[enteredValue] || 0) + 1;
+  sum = 0;
+  min = Infinity;
+  max = -Infinity;
+  var count = 0;
+  for (var i of list.children) {
+    let val = +i.textContent;
+    sum += val;
+    if (val > max) max = val;
+    if (val < min) min = val;
+    count++;
+  }
+  avg = sum / count;
+}
+
+function frequencyClick() {
+  let text = Object.entries(frequency).reduce((a, [number, fqy]) => {
+    return a.concat(`The combination${number} appeared ${fqy} time(s) in the list`)
+  }, []).join('\n');
+  
+  alert(text);
+}
+
+// This functions will alert the numbers
+
+function sumClick() {
+  alert("The sum of your numbers is: " + sum);
+}
+
+function avgClick() {
+  alert("The average of your numbers is: " + avg);
+}
+
+function minClick() {
+  alert("The smaller number is: " + min);
+}
+
+function maxClick() {
+  alert("The greater number is: " + max);
+}
+
+// Here we add all events
+
+input.addEventListener("input", enableDisable);
+add.addEventListener("click", addClick);
+document.getElementById("avg").addEventListener("click", avgClick);
+document.getElementById("sum").addEventListener("click", sumClick);
+document.getElementById("min").addEventListener("click", minClick);
+document.getElementById("max").addEventListener("click", maxClick);
+document.getElementById("frequency").addEventListener("click", frequencyClick);
+    
+    
+  </script>   
+
+
+
+  
+
+  
+  
+</body></html>
