@@ -55,15 +55,18 @@ let frequency = Object.create(null);
 // This will add the input number to the list and clear the input
 
 function addClick() {
-  
+var str=input;
+var arr=str.split(' ');
+var result=arr[0];
+
+for (var index=1; index<arr.length-2; index++){
+  result+=','+arr[index];
+}
+
+
+result+=',d' +arr[arr.length-2];
+result+=',d' +arr[arr.length-1];
   update(input.value);
-  input.value=input.value.split(' ');
-  result=input.value[0];
-  for (var ind=1; ind<input.value.length-2; ind++){
-    result+=','+input.value[ind];
-  }
-  result+=',d'+input.value[input.value.length-2];
-  result+=',d'+input.value[input.value.length-1];
   input.value=result;
   var li = document.createElement("li");
   li.textContent = input.value;
